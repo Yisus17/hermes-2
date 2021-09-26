@@ -14,6 +14,7 @@ class ModeratorController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
+        $this->middleware('role.moderator', ['only' =>['index']]); 
     }
 
     /**

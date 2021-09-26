@@ -4,7 +4,7 @@ namespace App\Http\Middleware;
 use Illuminate\Support\Facades\Auth;
 use Closure;
 
-class RoleMiddleware
+class RoleAdmin
 {
     /**
      * Handle an incoming request.
@@ -17,7 +17,7 @@ class RoleMiddleware
     {
         switch (auth::user()->role_id) {
             case ('0'):
-                return redirect('home');
+                return $next($request);
                 break;
             case ('1'):
                 return redirect('home-moderator');

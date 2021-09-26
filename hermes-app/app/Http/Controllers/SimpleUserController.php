@@ -14,6 +14,7 @@ class SimpleUserController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
+        $this->middleware('role.simple', ['only' =>['index']]); 
     }
 
     /**

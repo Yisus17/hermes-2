@@ -16,9 +16,9 @@ use Illuminate\Support\Facades\Auth;
 
 //Rutas Homes por roles
 
-Route::resource('/home', 'HomeController')->middleware('role.middleware');
-Route::resource('/home-moderator', 'ModeratorController')->middleware('role.middleware');
-Route::resource('/home-simple-user', 'SimpleUserController')->middleware('role.middleware');
+Route::resource('/home', 'HomeController');
+Route::resource('/home-moderator', 'ModeratorController');
+Route::resource('/home-simple-user', 'SimpleUserController');
 
 Route::get('/', 'HomeController@index')->name('dashboard')->middleware('auth');
 
