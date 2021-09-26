@@ -16,13 +16,13 @@ class RoleAdmin
     public function handle($request, Closure $next)
     {
         switch (auth::user()->role_id) {
-            case ('0'):
+            case ('1'):
                 return $next($request);
                 break;
-            case ('1'):
+            case ('2'):
                 return redirect('home-moderator');
                 break;
-            case ('2'):
+            case ('3'):
                 return redirect('home-simple-user');
                 break;
         }
