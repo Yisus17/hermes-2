@@ -108,3 +108,29 @@ Breadcrumbs::for('invoices.edit', function ($trail, $item) {
   $trail->parent('invoices');
   $trail->push('Editar factura #'. numerationReportFormat($item->id), route('invoices.edit', $item->id));
 });
+
+/********* Usuarios ***********/ 
+
+// Dashboard > Usuarios
+Breadcrumbs::for('users', function ($trail) {
+  $trail->parent('dashboard');
+  $trail->push('Usuarios', route('users.index'));
+});
+
+// Dashboard > Usuarios > Crear usuario
+Breadcrumbs::for('users.create', function ($trail) {
+  $trail->parent('users');
+  $trail->push('Crear usuario', route('users.create'));
+});
+
+// Dashboard > Usuarios > Mostrar usuario
+Breadcrumbs::for('users.show', function ($trail, $item) {
+  $trail->parent('users');
+  $trail->push($item->name , route('users.show', $item->id));
+});
+
+// Dashboard > Usuarios > Editar usuario
+Breadcrumbs::for('users.edit', function ($trail, $item) {
+  $trail->parent('users');
+  $trail->push('Editar usuario', route('users.edit', $item->id));
+});

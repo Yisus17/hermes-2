@@ -4,6 +4,7 @@ namespace App\Http\Middleware;
 
 use Illuminate\Support\Facades\Auth;
 use Closure;
+use Illuminate\Support\Facades\Config;
 
 class RoleSimple
 {
@@ -17,13 +18,13 @@ class RoleSimple
     public function handle($request, Closure $next)
     {
         switch (auth::user()->role_id) {
-            case ('1'):
+            case (Config::get('constants.roles_id.admin')):
                 return redirect('home');
                 break;
-            case ('2'):
+            case (Config::get('constants.roles_id.moderator')):
                 return redirect('home-moderator');
                 break;
-            case ('3'):
+            case (Config::get('constants.roles_id.simple_user')):
                 return $next($request);
                 break;
         }

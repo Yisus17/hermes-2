@@ -51,3 +51,9 @@ Route::post('/invoices/addProduct', 'InvoiceController@addProduct');
 Route::get('/invoices/excelExport/{id}', 'InvoiceController@excelExport')->name('invoices.excelExport');
 Route::get('/invoices/excelView/{id}', 'InvoiceController@excelView')->name('invoices.excelView');
 Route::get('/invoices/duplicate/{id}', 'InvoiceController@duplicate')->name('invoices.duplicate');
+
+
+//Users
+Route::resource('/users', 'UserController');
+Route::get('/users/search/{keyword?}', 'UserController@search')->name('users.search');
+
