@@ -4,10 +4,11 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\Auth;
 
 class CreateEditClientRequest extends FormRequest{
 	public function authorize(){
-		return \Auth::check();
+		return Auth::check();
 	}
     
 

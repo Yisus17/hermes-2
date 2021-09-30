@@ -5,11 +5,11 @@
 	<div class="row justify-content-center">
 		<div class="col-md-8">
 
-		<!-- Breadcrumbs -->
-		{{ Breadcrumbs::render('clients.edit', $client) }}
+			<!-- Breadcrumbs -->
+			{{ Breadcrumbs::render('clients.edit', $client) }}
 
-		<!-- Session messages -->
-		@include('partials.session_message')
+			<!-- Session messages -->
+			@include('partials.session_message')
 
 
 			<div class="card">
@@ -19,10 +19,10 @@
 
 				<div class="card-body">
 					{!! Form::model($client, ['route' => ['clients.update', $client->id], 'method' => 'PUT']) !!}
-							@include('clients.partials.form')
+						@include('clients.partials.form')
 					{!! Form::close() !!}
 				</div>
-				</div>
+			</div>
 		</div>
 	</div>
 </div>

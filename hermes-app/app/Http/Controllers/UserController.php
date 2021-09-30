@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\User;
+use App\Role;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
@@ -38,12 +40,13 @@ class UserController extends Controller
                 break;
             case (Config::get('constants.roles_id.moderator')):
                 $users = User::where('company_id', $currentCompanyId)->paginate($this->PAGE_SIZE);
-                
+
                 break;
             case (Config::get('constants.roles_id.simple_user')):
                 return redirect('home-simple-user');
+
         }
-       
+
         return view('users.list', compact('users', 'currentUser'));
     }
 
@@ -54,18 +57,14 @@ class UserController extends Controller
      */
     public function create()
     {
-        //
+        $roles = Role::all();
+        $isCreatingForm = true;
+        return view('users.create', compact('roles', 'isCreatingForm'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
-        //
+        return $this->storeOrUpdate($request);
     }
 
     /**
@@ -76,7 +75,8 @@ class UserController extends Controller
      */
     public function show($id)
     {
-        //
+        $user = User::findOrFail($id);
+        return view('users.show', compact('user'));
     }
 
     /**
@@ -87,7 +87,10 @@ class UserController extends Controller
      */
     public function edit($id)
     {
-        //
+        $user = User::findOrFail($id);
+        $roles = Role::all();
+        $isCreatingForm = false;
+        return view('users.edit', compact('user', 'roles', 'isCreatingForm'));
     }
 
     /**
@@ -99,7 +102,7 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        return $this->storeOrUpdate($request, $id);
     }
 
     /**
@@ -110,26 +113,53 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $userToDelete = User::findOrFail($id);
+		$userToDelete->delete();
+		return redirect('users')->with('message', 'Usuario eliminado exitosamente');
     }
 
-    public function search(Request $request){
-		$querySearch = $request->keyword;
-		if (strlen($querySearch) == 0) { // clear search
-			$users =  User::paginate($this->PAGE_SIZE);
-		} else {
-			$users = User::where('name', 'LIKE', '%' . $querySearch . '%')
-				->orWhere('email', 'LIKE', '%' . $querySearch . '%')
-				->orWhere('name', 'LIKE', '%' . $querySearch . '%')
-				->orWhere('id', 'LIKE', '%' . $querySearch . '%')
-				->paginate($this->PAGE_SIZE);
-			$users->appends(array('keyword' => $querySearch));
-		}
+    public function search(Request $request)
+    {
+        $querySearch = $request->keyword;
+        if (strlen($querySearch) == 0) { // clear search
+            $users =  User::paginate($this->PAGE_SIZE);
+        } else {
+            $users = User::where('name', 'LIKE', '%' . $querySearch . '%')
+                ->orWhere('email', 'LIKE', '%' . $querySearch . '%')
+                ->orWhere('name', 'LIKE', '%' . $querySearch . '%')
+                ->orWhere('id', 'LIKE', '%' . $querySearch . '%')
+                ->paginate($this->PAGE_SIZE);
+            $users->appends(array('keyword' => $querySearch));
+        }
 
-		if ($request->ajax()) {
-			return view('users.partials.results', compact('users'));
-		} else {
-			return view('users.list', compact('users', 'querySearch'));
-		}
-	}
+        if ($request->ajax()) {
+            return view('users.partials.results', compact('users'));
+        } else {
+            return view('users.list', compact('users', 'querySearch'));
+        }
+    }
+
+    public function storeOrUpdate(Request $request, $id = null)
+    {
+        
+        if ($id == null) {
+            $user = new User($request->all());
+            $user->password = Hash::make($user->password);
+
+            //setting the company from the creator of this user
+            $user->company_id = auth::user()->company->id;
+        } else {
+            $user = User::findOrFail($id);
+            $user->update($request->all());
+            if($request->has('password')){
+                $user->password = Hash::make($user->password);
+            }
+        }
+       
+        $user->save();
+        $message = $id == null ? 'Contacto creado exitosamente' : 'Contacto editado exitosamente';
+
+        return redirect('users')->with('message', $message);
+
+    }
 }

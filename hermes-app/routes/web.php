@@ -54,6 +54,6 @@ Route::get('/invoices/duplicate/{id}', 'InvoiceController@duplicate')->name('inv
 
 
 //Users
-Route::resource('/users', 'UserController');
 Route::get('/users/search/{keyword?}', 'UserController@search')->name('users.search');
+Route::resource('/users', 'UserController');
 
