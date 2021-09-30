@@ -4,7 +4,7 @@
 <div class="container">
 	<div class="row justify-content-center">
 		<div class="col-md-12">
-			<h2>Dashboard</h2>
+			<h3>Menú: Administrador</h3>
 			<div class="card-deck mt-4">
 
 				<!-- CLIENTS -->
