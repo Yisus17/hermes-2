@@ -67,6 +67,10 @@ function getGlobalTaxPercentage(){
   return(21);
 }
 
+function getPagePaginatorsSize(){
+  return(30);
+}
+
 //Devuelve un numero en formato de 4 digitos
 function numerationReportFormat($idInt)
 {

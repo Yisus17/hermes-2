@@ -14,8 +14,13 @@ class Company extends Model
      */
     protected $fillable = [
         'name',
-        'sector',
-        'logo'
+        'logo',
+        'sector_id'
     ]; 
+
+
+    public function sector(){
+		return $this->belongsTo(Sector::class);
+	}
 
 }

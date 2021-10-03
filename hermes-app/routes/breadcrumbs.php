@@ -134,3 +134,29 @@ Breadcrumbs::for('users.edit', function ($trail, $item) {
   $trail->parent('users');
   $trail->push('Editar usuario', route('users.edit', $item->id));
 });
+
+/********* Emprendimientos ***********/ 
+
+// Dashboard > Emprendimientos
+Breadcrumbs::for('companies', function ($trail) {
+  $trail->parent('dashboard');
+  $trail->push('Emprendimientos', route('companies.index'));
+});
+
+// Dashboard > Emprendimientos > Crear emprendimiento
+Breadcrumbs::for('companies.create', function ($trail) {
+  $trail->parent('companies');
+  $trail->push('Crear emprendimiento', route('companies.create'));
+});
+
+// Dashboard > Emprendimientos > Mostrar emprendimiento
+Breadcrumbs::for('companies.show', function ($trail, $item) {
+  $trail->parent('companies');
+  $trail->push($item->name , route('companies.show', $item->id));
+});
+
+// Dashboard > Emprendimientos > Editar emprendimiento
+Breadcrumbs::for('companies.edit', function ($trail, $item) {
+  $trail->parent('companies');
+  $trail->push('Editar emprendimiento', route('companies.edit', $item->id));
+});

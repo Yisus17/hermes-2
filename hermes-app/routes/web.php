@@ -57,3 +57,7 @@ Route::get('/invoices/duplicate/{id}', 'InvoiceController@duplicate')->name('inv
 Route::get('/users/search/{keyword?}', 'UserController@search')->name('users.search');
 Route::resource('/users', 'UserController');
 
+//Companies
+Route::get('/companies/search/{keyword?}', 'CompanyController@search')->name('companies.search');
+Route::resource('/companies', 'CompanyController');
+

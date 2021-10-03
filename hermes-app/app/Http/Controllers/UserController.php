@@ -126,7 +126,6 @@ class UserController extends Controller
         } else {
             $users = User::where('name', 'LIKE', '%' . $querySearch . '%')
                 ->orWhere('email', 'LIKE', '%' . $querySearch . '%')
-                ->orWhere('name', 'LIKE', '%' . $querySearch . '%')
                 ->orWhere('id', 'LIKE', '%' . $querySearch . '%')
                 ->paginate($this->PAGE_SIZE);
             $users->appends(array('keyword' => $querySearch));
