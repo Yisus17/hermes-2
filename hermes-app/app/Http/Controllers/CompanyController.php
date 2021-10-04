@@ -98,9 +98,9 @@ class CompanyController extends Controller
      */
     public function destroy($id)
     {
-        $companyToDelete = Company::findOrFail($id);
-		$companyToDelete->delete();
-		return redirect('companies')->with('message', 'Emprendimiento eliminado exitosamente');
+        // $companyToDelete = Company::findOrFail($id);
+		// $companyToDelete->delete();
+		// return redirect('companies')->with('message', 'Emprendimiento eliminado exitosamente');
     }
 
     public function search(Request $request)

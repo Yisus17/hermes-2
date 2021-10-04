@@ -20,7 +20,6 @@
                         @csrf
                         <a href="{{route('companies.show', $item->id)}}" class="btn btn-primary btn-sm" title="Mostrar emprendimiento"><i class="fas fa-eye"></i></a>
                         <a href="{{route('companies.edit', $item)}}" class="btn btn-success btn-sm" title="Editar emprendimiento"><i class="fas fa-edit"></i></a>
-                        <button type="submit" class="btn btn-danger btn-sm" title="Eliminar emprendimiento"><i class="fa fa-trash"></i></button>
                     </form>
                 </td>
             </tr>
