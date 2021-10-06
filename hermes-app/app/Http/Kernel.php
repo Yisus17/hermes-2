@@ -65,5 +65,6 @@ class Kernel extends HttpKernel
         'role.admin' => \App\Http\Middleware\RoleAdmin::class,
         'role.moderator' => \App\Http\Middleware\RoleModerator::class,
         'role.simple' => \App\Http\Middleware\RoleSimple::class,
+        'solo.admin.access' => \App\Http\Middleware\SoloAdminAccess::class
     ];
 }

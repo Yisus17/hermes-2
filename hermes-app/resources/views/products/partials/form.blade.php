@@ -64,13 +64,22 @@
     />
   </div>
 
-  <div class="form-group col-12 col-sm-6">
+  <!-- <div class="form-group col-12 col-sm-6">
     <label for="serial">Serial</label>
     <input 
       type="text" 
       name="serial" 
       class="form-control" 
       value="{{isset($product) ? $product->serial : old('serial')}}"/>
+  </div> -->
+
+  <div class="form-group col-12 col-sm-6">
+    <label for="stock">Stock</label>
+    <input 
+      type="number" 
+      name="serial" 
+      class="form-control" 
+      value="0"/>
   </div>
 
   <div class="form-group col-12 col-sm-6">
@@ -85,12 +94,12 @@
         value="{{isset($product) ? $product->purchase_price : old('purchase_price')}}" 
       />
       <div class="input-group-append">
-        <span class="input-group-text">€</span>
+        <span class="input-group-text"> {{auth()->user()->company->currency}}</span>
       </div>
     </div>
   </div>
 
-  <div class="form-group col-12 col-sm-6">
+  <!-- <div class="form-group col-12 col-sm-6">
     <label for="status">Estado</label>
     <input 
       type="text" 
@@ -108,9 +117,9 @@
       class="form-control" 
       value="{{isset($product) ? $product->bought_by : old('bought_by')}}"
     />
-  </div>
+  </div> -->
 
-  <div class="form-group col-12 col-sm-6">
+  <!-- <div class="form-group col-12 col-sm-6">
     <label for="purchase_date">Fecha de compra</label>
     <div class="input-group">
       <input type="text" id="purchase_date" name="purchase_date" class="form-control datetimepicker" autocomplete="off"/>
@@ -131,7 +140,7 @@
       value="{{isset($product) ? $product->years_old : old('years_old')}}" 
       readonly
     />
-  </div>
+  </div> -->
 
   <div class="form-group col-12">
     <label>Imagen</label>
@@ -165,10 +174,10 @@
     </div>
   </div>
 
-  <div class="form-group form-check col-12">
+  <!-- <div class="form-group form-check col-12">
     <input type="checkbox" name="countable" {{isset($product) && $product->countable ? 'checked="checked"' : ''}}>
     <label class="form-check-label" for="countable">Marcar si este producto es contable</label>
-  </div>
+  </div> -->
 
   <div class="form-group col-12">
     <button class="btn btn-primary " type="submit">Guardar</button>

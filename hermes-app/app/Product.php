@@ -10,7 +10,7 @@ class Product extends Model{
 	protected $fillable = [
 		'code', 'brand', 'model', 'description', 
 		'type', 'serial', 'purchase_price', 'status', 
-		'bought_by', 'countable', 'purchase_date', 'years_old', 'deleted'];
+		'bought_by', 'countable', 'purchase_date', 'years_old', 'deleted', 'company_id'];
 
 	protected $casts = [
 		'countable' => 'boolean'
@@ -33,4 +33,8 @@ class Product extends Model{
 	public function getUnitPriceAttribute(){
 		return getPercentageValue($this->purchase_price, $this->unitPricePercentage);
 	}
+	
+	public function company(){ 
+        return $this->belongsTo(Company::class);
+    }
 }

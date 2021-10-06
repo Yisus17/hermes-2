@@ -11,6 +11,7 @@ use Maatwebsite\Excel\Concerns\WithEvents;
 use Maatwebsite\Excel\Events\AfterSheet;
 use Maatwebsite\Excel\Concerns\WithDrawings;
 use PhpOffice\PhpSpreadsheet\Worksheet\Drawing;
+use Illuminate\Support\Facades\Auth;
 
 
 class BudgetsExport implements FromView, WithEvents, ShouldAutoSize, WithDrawings{
@@ -32,7 +33,8 @@ class BudgetsExport implements FromView, WithEvents, ShouldAutoSize, WithDrawing
 	public function drawings(){
 		$logo = new Drawing();
 		$logo->setName('Logo');
-		$logo->setPath(public_path('/img/logo_onyx.png'));
+		//$logo->setPath(public_path('/img/logo_onyx.png'));
+		$logo->setPath(public_path('\img\\'.auth()->user()->company->logo));
 		$logo->setHeight(80);
 		$logo->setCoordinates('E1');
 

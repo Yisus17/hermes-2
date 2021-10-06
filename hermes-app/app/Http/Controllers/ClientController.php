@@ -7,64 +7,91 @@ use App\Client;
 use App\ClientType;
 use App\Community;
 use App\Http\Requests\CreateEditClientRequest;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Config;
 
-class ClientController extends Controller{
+class ClientController extends Controller
+{
 	private $PAGE_SIZE = 30;
 
-	public function __construct(){
+	public function __construct()
+	{
 		$this->middleware('auth');
 	}
 
-	public function index(){
+	public function index()
+	{
+		$currentCompanyId = auth::user()->company->id;
+		$currentUser = auth::user();
+
+		switch ($currentUser->role_id) {
+			case (Config::get('constants.roles_id.admin')):
+				$clients =  Client::paginate($this->PAGE_SIZE);
+				return view('clients.list', compact('clients'));
+
+			case (Config::get('constants.roles_id.moderator') || Config::get('constants.roles_id.simple_user')):
+				$clients = Client::where('company_id', $currentCompanyId)->paginate($this->PAGE_SIZE);
+				return view('clients.list', compact('clients'));
+		}
+
 		$clients =  Client::paginate($this->PAGE_SIZE);
 		return view('clients.list', compact('clients'));
 	}
 
-	public function create(){
+	public function create()
+	{
 		$clientTypes = ClientType::all();
 		$communities = Community::all();
 		return view('clients.create', compact('clientTypes', 'communities'));
 	}
 
-	public function store(CreateEditClientRequest $request){
+	public function store(CreateEditClientRequest $request)
+	{
 		return $this->storeOrUpdate($request);
 	}
 
-	public function show($id){
+	public function show($id)
+	{
 		$client = Client::findOrFail($id);
 		return view('clients.show', compact('client'));
 	}
 
-	public function edit($id){
+	public function edit($id)
+	{
 		$client = Client::findOrFail($id);
 		$clientTypes = ClientType::all();
 		$communities = Community::all();
 		return view('clients.edit', compact('client', 'clientTypes', 'communities'));
 	}
 
-	public function update(CreateEditClientRequest $request, $id){
+	public function update(CreateEditClientRequest $request, $id)
+	{
 		return $this->storeOrUpdate($request, $id);
 	}
 
-	public function destroy($id){
+	public function destroy($id)
+	{
 		$clientToDelete = Client::findOrFail($id);
 		$clientToDelete->delete();
 		return redirect('clients')->with('message', 'Contacto eliminado exitosamente');
 	}
 
-	public function storeOrUpdate(CreateEditClientRequest $request, $id=null){
-		
-		if($id == null){
+	public function storeOrUpdate(CreateEditClientRequest $request, $id = null)
+	{
+
+		if ($id == null) {
 			$client = new Client($request->all());
-		}else{
+			$currentCompanyId = auth()->user()->company->id;
+			$client->company_id = $currentCompanyId;
+		} else {
 			$client = Client::findOrFail($id);
 			$client->update($request->all());
 		}
 
-		if(!empty($request->client_type_id)){
+		if (!empty($request->client_type_id)) {
 			$clientType = ClientType::find($request->client_type_id);
 			$client->clientType()->associate($clientType);
-		}	
+		}
 
 		$community = Community::find($request->community_id);
 		$client->community()->associate($community);
@@ -75,7 +102,8 @@ class ClientController extends Controller{
 		return redirect('clients')->with('message', $message);
 	}
 
-	public function search(Request $request){
+	public function search(Request $request)
+	{
 		$querySearch = $request->keyword;
 		if (strlen($querySearch) == 0) { // clear search
 			$clients =  Client::paginate($this->PAGE_SIZE);

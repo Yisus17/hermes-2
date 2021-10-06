@@ -27,11 +27,11 @@
 </div>
 
 <div class="form-group row">
-    <label for="role_id" class="col-md-4 col-form-label text-md-right">{{ __('Role') }}</label>
+    <label for="role_id" class="col-md-4 col-form-label text-md-right">{{ __('Rol') }}</label>
 
     <div class="col-md-6">
         <select name="role_id" id="role_id" class="form-control">
-            <option value="" selected disabled>--Select--</option>
+            <option value="" selected disabled>--Seleccionar--</option>
             @foreach($roles as $role)
             <option value="{{ $role->id }}" {{ (isset($user) && $role->id == $user->role_id) 
                                         || old('role_id') == $role->id ? 'selected' : '' }}>
@@ -41,6 +41,29 @@
         </select>
 
         @error('role')
+        <span class="invalid-feedback" role="alert">
+            <strong>{{ $message }}</strong>
+        </span>
+        @enderror
+    </div>
+</div>
+
+
+<div class="form-group row">
+    <label for="company_id" class="col-md-4 col-form-label text-md-right">{{ __('Company') }}</label>
+
+    <div class="col-md-6">
+        <select name="company_id" id="company_id" class="form-control">
+            <option value="" selected disabled>--Seleccionar--</option>
+            @foreach($companies as $company)
+            <option value="{{ $company->id }}" {{ (isset($user) && $company->id == $user->company_id) 
+                                        || old('company_id') == $company->id ? 'selected' : '' }}>
+                {{ $company->name }}
+            </option>
+            @endforeach
+        </select>
+
+        @error('company')
         <span class="invalid-feedback" role="alert">
             <strong>{{ $message }}</strong>
         </span>
@@ -77,7 +100,7 @@
 <div class="form-group row mb-0">
     <div class="col-md-6 offset-md-4">
         <button type="submit" class="btn btn-primary">
-            {{ __('Registrar') }}
+            {{ __('Guardar') }}
         </button>
         <a href="{{ url('/users') }}">
             <button type="button" class="btn btn-secondary">

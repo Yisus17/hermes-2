@@ -35,6 +35,20 @@
     </div>
 </div>
 
+<div class="form-group row">
+    <label for="currency" class="col-md-4 col-form-label text-md-right">{{ __('Moneda') }}</label>
+    <div class="col-md-6">
+        <select name="currency" class="form-control">
+            <option value="" selected disabled>--Seleccionar--</option>
+            @foreach(getCurrencies() as $key => $value)
+            <option value="{{$key}}" {{(isset($company) && $key == $company->currency) || old('currency') == $key ? 'selected' : '' }}>
+                {{$value}}
+            </option>
+            @endforeach
+        </select>
+    </div>
+</div>
+
 
 <div class="form-group row">
     <label for="name" class="col-md-4 col-form-label text-md-right">{{ __('Logo') }}</label>
@@ -54,7 +68,7 @@
 <div class="form-group row mb-0">
     <div class="col-md-6 offset-md-4">
         <button type="submit" class="btn btn-primary">
-            {{ __('Crear') }}
+            {{ __('Guardar') }}
         </button>
         <a href="{{ url('/companies') }}">
             <button type="button" class="btn btn-secondary">

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Company;
 use App\User;
 use App\Role;
 use Illuminate\Http\Request;
@@ -39,12 +40,13 @@ class UserController extends Controller
                 $users = User::paginate($this->PAGE_SIZE);
                 break;
             case (Config::get('constants.roles_id.moderator')):
-                $users = User::where('company_id', $currentCompanyId)->paginate($this->PAGE_SIZE);
+                $users = User::where('company_id', $currentCompanyId)
+                ->where('role_id', '<>', Config::get('constants.roles_id.admin'))
+                ->paginate($this->PAGE_SIZE);
 
                 break;
             case (Config::get('constants.roles_id.simple_user')):
                 return redirect('home-simple-user');
-
         }
 
         return view('users.list', compact('users', 'currentUser'));
@@ -58,8 +60,9 @@ class UserController extends Controller
     public function create()
     {
         $roles = Role::all();
+        $companies = Company::all();
         $isCreatingForm = true;
-        return view('users.create', compact('roles', 'isCreatingForm'));
+        return view('users.create', compact('roles', 'companies', 'isCreatingForm'));
     }
 
     public function store(Request $request)
@@ -89,8 +92,9 @@ class UserController extends Controller
     {
         $user = User::findOrFail($id);
         $roles = Role::all();
+        $companies = Company::all();
         $isCreatingForm = false;
-        return view('users.edit', compact('user', 'roles', 'isCreatingForm'));
+        return view('users.edit', compact('user', 'roles', 'companies', 'isCreatingForm'));
     }
 
     /**
@@ -114,8 +118,8 @@ class UserController extends Controller
     public function destroy($id)
     {
         $userToDelete = User::findOrFail($id);
-		$userToDelete->delete();
-		return redirect('users')->with('message', 'Usuario eliminado exitosamente');
+        $userToDelete->delete();
+        return redirect('users')->with('message', 'Usuario eliminado exitosamente');
     }
 
     public function search(Request $request)
@@ -127,6 +131,9 @@ class UserController extends Controller
             $users = User::where('name', 'LIKE', '%' . $querySearch . '%')
                 ->orWhere('email', 'LIKE', '%' . $querySearch . '%')
                 ->orWhere('id', 'LIKE', '%' . $querySearch . '%')
+                ->orWhereHas('company', function ($query) use ($querySearch) {
+					$query->where('name', 'LIKE', '%' . $querySearch . '%');
+				})
                 ->paginate($this->PAGE_SIZE);
             $users->appends(array('keyword' => $querySearch));
         }
@@ -140,7 +147,7 @@ class UserController extends Controller
 
     public function storeOrUpdate(Request $request, $id = null)
     {
-        
+
         if ($id == null) {
             $user = new User($request->all());
             $user->password = Hash::make($user->password);
@@ -150,15 +157,14 @@ class UserController extends Controller
         } else {
             $user = User::findOrFail($id);
             $user->update($request->all());
-            if($request->has('password')){
+            if ($request->has('password')) {
                 $user->password = Hash::make($user->password);
             }
         }
-       
+
         $user->save();
         $message = $id == null ? 'Contacto creado exitosamente' : 'Contacto editado exitosamente';
 
         return redirect('users')->with('message', $message);
-
     }
 }

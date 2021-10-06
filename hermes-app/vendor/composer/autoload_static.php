@@ -647,6 +647,7 @@ class ComposerStaticInitb482b2b0b3fe2481c9b9eed22be36e60
         'App\\Http\\Middleware\\RoleAdmin' => __DIR__ . '/../..' . '/app/Http/Middleware/RoleAdmin.php',
         'App\\Http\\Middleware\\RoleModerator' => __DIR__ . '/../..' . '/app/Http/Middleware/RoleModerator.php',
         'App\\Http\\Middleware\\RoleSimple' => __DIR__ . '/../..' . '/app/Http/Middleware/RoleSimple.php',
+        'App\\Http\\Middleware\\SoloAdminAccess' => __DIR__ . '/../..' . '/app/Http/Middleware/SoloAdminAccess.php',
         'App\\Http\\Middleware\\TrimStrings' => __DIR__ . '/../..' . '/app/Http/Middleware/TrimStrings.php',
         'App\\Http\\Middleware\\TrustProxies' => __DIR__ . '/../..' . '/app/Http/Middleware/TrustProxies.php',
         'App\\Http\\Middleware\\VerifyCsrfToken' => __DIR__ . '/../..' . '/app/Http/Middleware/VerifyCsrfToken.php',

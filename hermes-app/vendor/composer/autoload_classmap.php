@@ -40,6 +40,7 @@ return array(
     'App\\Http\\Middleware\\RoleAdmin' => $baseDir . '/app/Http/Middleware/RoleAdmin.php',
     'App\\Http\\Middleware\\RoleModerator' => $baseDir . '/app/Http/Middleware/RoleModerator.php',
     'App\\Http\\Middleware\\RoleSimple' => $baseDir . '/app/Http/Middleware/RoleSimple.php',
+    'App\\Http\\Middleware\\SoloAdminAccess' => $baseDir . '/app/Http/Middleware/SoloAdminAccess.php',
     'App\\Http\\Middleware\\TrimStrings' => $baseDir . '/app/Http/Middleware/TrimStrings.php',
     'App\\Http\\Middleware\\TrustProxies' => $baseDir . '/app/Http/Middleware/TrustProxies.php',
     'App\\Http\\Middleware\\VerifyCsrfToken' => $baseDir . '/app/Http/Middleware/VerifyCsrfToken.php',

@@ -103,4 +103,21 @@ function getBudgetMainTextLine3(){
 }
 
 
+function getCurrencies(){
+  return [
+    'USD' => 'USD',
+    'EUR' => 'EUR',
+    'COP' => 'COP',
+    'BRL' => 'BRL'
+  ];
+}
+
+function getProductTypesOptions(){
+  return  [
+    '1' => 'Regular',
+    '2' => 'Servicio'
+  ];
+}
+
+
 ?>

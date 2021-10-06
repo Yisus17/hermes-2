@@ -18,6 +18,12 @@ class CompanyController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
+        $this->middleware('solo.admin.access', [
+            'only' => [
+                'index',
+                'create'
+            ]
+        ]);
     }
 
 

@@ -104,7 +104,7 @@ class UserSeeder extends Seeder
             ['id' => 81, 'name' => 'Productos de limpieza'],
             ['id' => 82, 'name' => 'Productos minerales no metálicos'],
             ['id' => 83, 'name' => 'Publicidad y marketing'],
-            ['id' => 84, 'name' => 'Publicidad y marketing'],
+            ['id' => 84, 'name' => 'Marketing digital'],
             ['id' => 85, 'name' => 'Refinerías de petróleo'],
             ['id' => 86, 'name' => 'Reformas en el hogar y jardinería'],
             ['id' => 87, 'name' => 'Religión'],
@@ -134,11 +134,11 @@ class UserSeeder extends Seeder
         );
 
         $companies = array(
-            ['id' => 1, 'name' => 'Moddo', 'logo' => '', 'sector_id' => 1],
-            ['id' => 2, 'name' => 'Paradigma Digital', 'logo' => '', 'sector' => 2],
-            ['id' => 3, 'name' => 'Tek-know', 'logo' => '', 'sector_id' => 3],
-            ['id' => 4, 'name' => 'LogosCorp', 'logo' => '', 'sector_id' => 1],
-            ['id' => 5, 'name' => 'BeeConcept', 'logo' => '', 'sector_id' => 1]
+            ['id' => 1, 'name' => 'Moddo', 'logo' => '', 'sector_id' => 1, 'currency' => 'USD'],
+            ['id' => 2, 'name' => 'Paradigma Digital', 'logo' => '', 'sector' => 2, 'currency' => 'USD'],
+            ['id' => 3, 'name' => 'Tek-know', 'logo' => '', 'sector_id' => 3, 'currency' => 'USD'],
+            ['id' => 4, 'name' => 'LogosCorp', 'logo' => '', 'sector_id' => 1, 'currency' => 'USD'],
+            ['id' => 5, 'name' => 'BeeConcept', 'logo' => '', 'sector_id' => 1, 'currency' => 'USD']
         );
 
 
@@ -187,6 +187,14 @@ class UserSeeder extends Seeder
             ]
         );
 
+        $categories = array(
+            ['id' => 1, 'name' => 'Ropa / Moda / Calzado'],
+            ['id' => 2, 'name' => 'Informatica / Electronica'],
+            ['id' => 3, 'name' => 'Hogar / Cocina / Baño'],
+            ['id' => 4, 'name' => 'Alimentación'],
+        );
+
+        DB::table('categories')->insert($categories);
         DB::table('roles')->insert($roles);
         DB::table('sectors')->insert($sectors);
         DB::table('companies')->insert($companies);

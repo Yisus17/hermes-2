@@ -5,6 +5,7 @@ namespace App;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Config;
 
 class User extends Authenticatable
 {
@@ -37,11 +38,14 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    public function role(){
-		return $this->belongsTo(Role::class);
-	}
-    
-     public function company(){ //$user-company
+    public function role()
+    {
+        return $this->belongsTo(Role::class);
+    }
+
+    public function company()
+    { //$user-company
         return $this->belongsTo(Company::class);
     }
+    
 }
