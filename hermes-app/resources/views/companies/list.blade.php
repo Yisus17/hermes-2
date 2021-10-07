@@ -40,7 +40,7 @@
 
                 <div class="card-body">
                     @include('partials.loader')
-                    <div id="companies-list-container">
+                    <div id="company-list-container">
                         @include('companies.partials.results')
                     </div>
                 </div>
@@ -56,7 +56,6 @@
         let keyword = $("#search-company").val();
         $("#company-list-container").html("");
         $(".loader-center").removeClass("hidden");
-
         $.ajax({
             type: "GET",
             url: "{{route('companies.search')}}",

@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 class CompanyController extends Controller
 {
 
+    private $PAGE_SIZE = 30;
     /**
      * Create a new controller instance.
      *
@@ -112,18 +113,17 @@ class CompanyController extends Controller
     public function search(Request $request)
     {
         $querySearch = $request->keyword;
-        if (strlen($querySearch) == 0) { // clear search
-            $companies =  Company::paginate(30);
-        } else {
-            $companies = Company::where('name', 'LIKE', '%' . $querySearch . '%')
-                ->orWhere('id', 'LIKE', '%' . $querySearch . '%')
-                ->orWhereHas('sector', function ($query) use ($querySearch) {
-                    $query->where('name', 'LIKE', '%' . $querySearch . '%');
-                })
-                ->paginate(30);
-            $companies->appends(array('keyword' => $querySearch));
-        }
-
+		if (strlen($querySearch) == 0) { // clear search
+			$companies =  Company::paginate($this->PAGE_SIZE);
+		} else {
+			$companies = Company::where('name', 'LIKE', '%' . $querySearch . '%')
+				->orWhereHas('sector', function ($query) use ($querySearch) {
+					$query->where('name', 'LIKE', '%' . $querySearch . '%');
+				})
+				->paginate($this->PAGE_SIZE);
+			$companies->appends(array('keyword' => $querySearch));
+		}
+        
         if ($request->ajax()) {
             return view('companies.partials.results', compact('companies'));
         } else {
