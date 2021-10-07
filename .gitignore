@@ -29,3 +29,6 @@ Homestead.json
 .phpunit.result.cache
 
 # End of https://www.toptal.com/developers/gitignore/api/laravel
+
+public/img/*
+public/uploads/*
