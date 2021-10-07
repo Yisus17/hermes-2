@@ -3,9 +3,9 @@
     <thead>
       <tr>
         <th scope="col"><span class="guide-field">*</span>Razón social</th>
+        <th scope="col"><span class="guide-field">*</span>Persona</th>
         <th scope="col"><span class="guide-field">*</span>Teléfono</th>
         <th scope="col"><span class="guide-field">*</span>Email</th>
-        <th scope="col">Dirección</th>
         <th scope="col">Acciones</th>
       </tr>
     </thead>
@@ -13,9 +13,9 @@
       @foreach ($clients as $item)
         <tr>
           <td>{{ $item->business_name }}</td>
+          <td>{{ $item->name }} {{ $item->lastname }}</td>
           <td>{{ $item->phone }}</td>
           <td>{{ $item->email }}</td>
-          <td>{{ $item->address }}</td>
           <td>
             <form action="{{ route('clients.destroy',$item->id) }}" method="POST" onsubmit="return confirm('¿Estás seguro que deseas eliminar a este contacto?');">
               @method('DELETE')

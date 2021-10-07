@@ -8,7 +8,7 @@ class Client extends Model{
 	protected $fillable = [
 		'name', 'lastname', 'business_name', 
 		'address', 'phone', 'secondary_phone', 'email', 'postal_code', 
-		'client_type_id', 'community_id', 'cif' , 'supplier_id', 'typology', 'fiscal_id', 'company_id'];
+		'client_type_id', 'community_id', 'rif' , 'supplier_id', 'typology', 'fiscal_id', 'company_id'];
 
 	public function budgets(){
 		return $this->hasMany(Budget::class);

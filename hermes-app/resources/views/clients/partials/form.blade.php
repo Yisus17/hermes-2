@@ -14,34 +14,15 @@
   </div>
 
   <div class="form-group col-6">
-    <label for="name"><span class="required-field">*</span>CIF</label>
+    <label for="name"><span class="required-field">*</span>RIF</label>
     <input 
       type="text" 
-      name="cif" 
+      name="rif" 
       class="form-control" 
-      value="{{isset($client) ? $client->cif : old('cif')}}" 
+      value="{{isset($client) ? $client->rif : old('rif')}}" 
       required/>
   </div>
 
-  <div class="form-group col-6">
-    <label for="name"></span>Supplier ID</label>
-    <input 
-      type="text" 
-      name="supplier_id" 
-      class="form-control" 
-      value="{{isset($client) ? $client->supplier_id : old('supplier_id')}}" 
-      required/>
-  </div>
-
-  <div class="form-group col-6">
-    <label for="name"><span class="required-field">*</span>ID Fiscal</label>
-    <input 
-      type="text" 
-      name="fiscal_id" 
-      class="form-control" 
-      value="{{isset($client) ? $client->fiscal_id : old('fiscal_id')}}" 
-      required/>
-  </div>
 
   <div class="form-group col-12">
     <label for="address"><span class="required-field">*</span>Dirección</label>
@@ -62,7 +43,7 @@
   </div>
 
   <div class="form-group col-12 col-sm-6">
-    <label for="community_id">Comunidad autónoma</label>
+    <label for="community_id">Estado / Provincia</label>
     <select name="community_id" class="form-control selectpicker" data-live-search="true">
       <option value="" selected disabled>--Selecciona una opción--</option>
       @foreach($communities as $community)
@@ -121,7 +102,7 @@
   </div>
 
   <!-- Tipo de cliente usando foreign id en BD -->
-  <!-- <div class="form-group col-12 col-sm-6">
+   <div class="form-group col-12 col-sm-6">
     <label for="client_type_id">Tipo</label>
     <select name="client_type_id" class="form-control selectpicker" data-live-search="true">
       <option value="" selected disabled>--Selecciona una opción--</option>
@@ -129,10 +110,10 @@
         <option value="{{ $clientType->id }}" {{ (isset($client) && $clientType->id == $client->client_type_id) || old('client_type_id') == $clientType->id ? 'selected' : '' }}>{{ $clientType->name }}</option>
       @endforeach
     </select>
-  </div> -->
+  </div>
 
   <!-- Tipo de cliente usando un input text directo a un field en tabla de cliente -->
-  <div class="form-group col-12 col-sm-6">
+  <!-- <div class="form-group col-12 col-sm-6">
     <label for="lastname"><span class="required-field">*</span>Tipo</label>
     <input 
       type="text" 
@@ -140,7 +121,7 @@
       class="form-control" 
       value="{{isset($client) ? $client->typology : old('typology')}}" 
       required/>
-  </div>
+  </div> -->
 
   <div class="form-group col-12">
     <button class="btn btn-primary " type="submit">Guardar</button>

@@ -14,7 +14,7 @@ class AddCifClientsTable extends Migration
     public function up()
     {
         Schema::table('clients', function (Blueprint $table) {
-            $table->string('cif')->nullable();
+            $table->string('rif')->nullable();
         });
     }
 
@@ -26,7 +26,7 @@ class AddCifClientsTable extends Migration
     public function down()
     {
         Schema::table('clients', function (Blueprint $table) {
-            $table->dropColumn('cif');
+            $table->dropColumn('rif');
         });
     }
 }

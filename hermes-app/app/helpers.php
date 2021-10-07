@@ -119,5 +119,12 @@ function getProductTypesOptions(){
   ];
 }
 
+function getClientTypesOptions(){
+  return  [
+    'CLIENTE' => 'CLIENTE',
+    'PROVEEDOR' => 'PROVEEDOR'
+  ];
+}
+
 
 ?>

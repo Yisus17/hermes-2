@@ -5,6 +5,11 @@
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-8">
+            <!-- Breadcrumbs -->
+			{{ Breadcrumbs::render('users.show', $user) }}
+
+            <!-- Session messages -->
+            @include('partials.session_message')
 
             <div class="card">
                 <div class="card-header d-flex justify-content-between align-items-center">
@@ -20,6 +25,10 @@
                             <tr>
                                 <th>Nombre</th>
                                 <td>{{$user->name}}</td>
+							</tr>
+                            <tr>
+                                <th>Apellido</th>
+                                <td>{{$user->last_name}}</td>
 							</tr>
                             <tr>
                                 <th>Email</th>

@@ -78,7 +78,6 @@ class ClientController extends Controller
 
 	public function storeOrUpdate(CreateEditClientRequest $request, $id = null)
 	{
-
 		if ($id == null) {
 			$client = new Client($request->all());
 			$currentCompanyId = auth()->user()->company->id;

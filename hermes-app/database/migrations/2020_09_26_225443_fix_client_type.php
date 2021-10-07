@@ -14,10 +14,10 @@ class FixClientType extends Migration
     public function up()
     {
         //
-        Schema::table('clients', function (Blueprint $table) {
-            $table->dropForeign(['client_type_id']);
-            $table->foreign('client_type_id')->references('id')->on('client_types')->onDelete('cascade');
-        });
+        // Schema::table('clients', function (Blueprint $table) {
+        //     $table->dropForeign(['client_type_id']);
+        //     $table->foreign('client_type_id')->references('id')->on('client_types')->onDelete('cascade');
+        // });
     }
 
     /**

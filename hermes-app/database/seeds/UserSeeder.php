@@ -134,52 +134,58 @@ class UserSeeder extends Seeder
         );
 
         $companies = array(
-            ['id' => 1, 'name' => 'Moddo', 'logo' => '', 'sector_id' => 1, 'currency' => 'USD'],
-            ['id' => 2, 'name' => 'Paradigma Digital', 'logo' => '', 'sector' => 2, 'currency' => 'USD'],
-            ['id' => 3, 'name' => 'Tek-know', 'logo' => '', 'sector_id' => 3, 'currency' => 'USD'],
-            ['id' => 4, 'name' => 'LogosCorp', 'logo' => '', 'sector_id' => 1, 'currency' => 'USD'],
-            ['id' => 5, 'name' => 'BeeConcept', 'logo' => '', 'sector_id' => 1, 'currency' => 'USD']
+            ['id' => 1, 'name' => 'Moddo', 'logo' => 'logo_moddo.png', 'sector_id' => 1, 'currency' => 'USD'],
+            ['id' => 2, 'name' => 'Paradigma Digital', 'logo' => 'logo_paradigma.svg', 'sector' => 2, 'currency' => 'USD'],
+            ['id' => 3, 'name' => 'Tek-know', 'logo' => 'logo_tekknow.jpg', 'sector_id' => 3, 'currency' => 'USD'],
+            ['id' => 4, 'name' => 'LogosCorp', 'logo' => 'logo_logoscorp.jpg', 'sector_id' => 1, 'currency' => 'USD'],
+            ['id' => 5, 'name' => 'BeeConcept', 'logo' => 'logo_beeconcept.png', 'sector_id' => 1, 'currency' => 'USD']
         );
 
 
         $users = array(
             [
-                'name' => 'JesusAdmin',
+                'name' => 'Admin',
+                'last_name' => 'Smith',
                 'email' => 'admin@enii.com',
                 'password' => Hash::make('jesusjesus'),
                 'role_id' => '1',
                 'company_id' => '1'
             ],
             [
-                'name' => 'JesusModerador',
+                'name' => 'Moderador',
+                'last_name' => 'Smith',
                 'email' => 'moderador@enii.com',
                 'password' => Hash::make('jesusjesus'),
                 'role_id' => '2',
                 'company_id' => '1'
             ],
             [
-                'name' => 'JesusSimpleUser',
+                'name' => 'SimpleUser',
+                'last_name' => 'Smith',
                 'email' => 'simple@enii.com',
                 'password' => Hash::make('jesusjesus'),
                 'role_id' => '3',
                 'company_id' => '1'
             ],
             [
-                'name' => 'JesusAdmin2',
+                'name' => 'Jesus',
+                'last_name' => 'Smith',
                 'email' => 'admin2@enii.com',
                 'password' => Hash::make('jesusjesus'),
                 'role_id' => '1',
                 'company_id' => '2'
             ],
             [
-                'name' => 'JesusModerador2',
+                'name' => 'Astrid',
+                'last_name' => 'Smith',
                 'email' => 'moderador2@enii.com',
                 'password' => Hash::make('jesusjesus'),
                 'role_id' => '2',
                 'company_id' => '2'
             ],
             [
-                'name' => 'JesusSimpleUser2',
+                'name' => 'Juan',
+                'last_name' => 'Smith',
                 'email' => 'simple2@enii.com',
                 'password' => Hash::make('jesusjesus'),
                 'role_id' => '3',
@@ -194,6 +200,45 @@ class UserSeeder extends Seeder
             ['id' => 4, 'name' => 'Alimentación'],
         );
 
+
+        $communities = array(
+            ['id' => 1, 'name' => 'Distrito Capital'],
+            ['id' => 2, 'name' => 'Amazonas'],
+            ['id' => 3, 'name' => 'Anzoategui'],
+            ['id' => 4, 'name' => 'Apure'],
+            ['id' => 5, 'name' => 'Aragua'],
+            ['id' => 6, 'name' => 'Barinas'],
+            ['id' => 7, 'name' => 'Miranda'],
+            ['id' => 8, 'name' => 'Carabobo'],
+            ['id' => 9, 'name' => 'Cojedes'],
+            ['id' => 10, 'name' => 'Delta Amacuro'],
+            ['id' => 11, 'name' => 'Falcon'],
+            ['id' => 12, 'name' => 'Guarico'],
+            ['id' => 13, 'name' => 'Lara'],
+            ['id' => 14, 'name' => 'Merida'],
+            ['id' => 15, 'name' => 'Bolivar'],
+            ['id' => 16, 'name' => 'Monagas'],
+            ['id' => 17, 'name' => 'Nueva Esparta'],
+            ['id' => 18, 'name' => 'Portuguesa'],
+            ['id' => 19, 'name' => 'Sucre'],
+            ['id' => 20, 'name' => 'Tachira'],
+            ['id' => 21, 'name' => 'Trujillo'],
+            ['id' => 22, 'name' => 'Yaracuy'],
+            ['id' => 23, 'name' => 'Zulia'],
+            ['id' => 24, 'name' => 'Vargas'],
+            ['id' => 25, 'name' => 'Dependencias Federales']
+		);
+
+        $clientTypes = array(
+			['id'=> 1, 'name' => "Cliente"],
+			['id'=> 2, 'name' => "Proveedor"]
+		);
+
+		
+
+
+        DB::table('client_types')->insert($clientTypes);
+		DB::table('communities')->insert($communities);
         DB::table('categories')->insert($categories);
         DB::table('roles')->insert($roles);
         DB::table('sectors')->insert($sectors);

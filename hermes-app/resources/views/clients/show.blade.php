@@ -24,17 +24,10 @@
 								<td>{{$client->business_name}}</td>
 							</tr>
 							<tr>
-								<th>CIF</th>
-								<td>{{$client->cif}}</td>
+								<th>RIF</th>
+								<td>{{$client->rif}}</td>
 							</tr>
-							<tr>
-								<th>Supplier ID</th>
-								<td>{{$client->supplier_id}}</td>
-							</tr>
-							<tr>
-								<th>ID Fiscal</th>
-								<td>{{$client->fiscal_id}}</td>
-							</tr>
+							
 							<tr>
 								<th>Dirección</th>
 								<td>{{$client->address}}</td>
@@ -44,7 +37,7 @@
 								<td>{{$client->postal_code}}</td>
 							</tr>
 							<tr>
-								<th>Comunidad autónoma</th>
+								<th>Estado / Provincia</th>
 								<td>{{isset($client->community) ? $client->community->name : ''}}</td>	
 							</tr>
 							<tr>
@@ -68,11 +61,10 @@
 								<td>{{$client->email}}</td>
 							</tr>
 							<tr>
-								<th>Tipo</th>
-								<!-- Tipo de cliente con tabla de tipos 
-									<td>{{isset($client->clientType) ? $client->clientType->name : ''}}</td> 
-								-->
-								<td>{{$client->typology}}</td>
+								<th>Tipo</th> 
+								<td>{{isset($client->clientType) ? $client->clientType->name : ''}}</td> 
+								
+								<!--<td>{{$client->typology}}</td>-->
 							</tr>
 						</tbody>
 					</table>
