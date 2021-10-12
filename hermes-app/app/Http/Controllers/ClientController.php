@@ -6,9 +6,11 @@ use Illuminate\Http\Request;
 use App\Client;
 use App\ClientType;
 use App\Community;
+use App\Company;
 use App\Http\Requests\CreateEditClientRequest;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\DB;
 
 class ClientController extends Controller
 {
@@ -95,6 +97,11 @@ class ClientController extends Controller
 		$community = Community::find($request->community_id);
 		$client->community()->associate($community);
 
+		$company = Company::find($client->company_id);
+		$client->company()->associate($company);
+
+
+
 		$client->save();
 		$message = $id == null ? 'Contacto creado exitosamente' : 'Contacto editado exitosamente';
 
@@ -103,17 +110,26 @@ class ClientController extends Controller
 
 	public function search(Request $request)
 	{
+		$companyId = auth::user()->company->id;
+		$currentUser = auth::user();
 		$querySearch = $request->keyword;
 		if (strlen($querySearch) == 0) { // clear search
 			$clients =  Client::paginate($this->PAGE_SIZE);
+
+			switch ($currentUser->role_id) {
+				case (Config::get('constants.roles_id.admin')):
+					$clients =  Client::paginate($this->PAGE_SIZE);
+				case (Config::get('constants.roles_id.moderator') || Config::get('constants.roles_id.simple_user')):
+					$clients = Client::where('company_id', $companyId)->paginate($this->PAGE_SIZE);
+			}
 		} else {
-			$clients = Client::where('email', 'LIKE', '%' . $querySearch . '%')
-				->orWhere('business_name', 'LIKE', '%' . $querySearch . '%')
-				->orWhere('name', 'LIKE', '%' . $querySearch . '%')
-				->orWhere('lastname', 'LIKE', '%' . $querySearch . '%')
-				->orWhere('phone', $querySearch)
-				->orWhere('secondary_phone', $querySearch)
-				->paginate($this->PAGE_SIZE);
+			$clients = Client::where('company_id', $companyId)
+				->where(function ($query) use ($querySearch) {
+					$query->where('business_name', 'LIKE', '%' . $querySearch . '%')
+						->orWhere('name', 'LIKE', '%' . $querySearch . '%')
+						->orWhere('lastname', 'LIKE', '%' . $querySearch . '%')
+						->orWhere('phone', $querySearch);
+				})->paginate($this->PAGE_SIZE);
 			$clients->appends(array('keyword' => $querySearch));
 		}
 

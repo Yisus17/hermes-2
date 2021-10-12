@@ -9,7 +9,7 @@ Breadcrumbs::for('dashboard', function ($trail) {
 // Dashboard > Contactos
 Breadcrumbs::for('clients', function ($trail) {
   $trail->parent('dashboard');
-  $trail->push('Menú', route('clients.index'));
+  $trail->push('Contactos', route('clients.index'));
 });
 
 // Dashboard > Contactos > Crear contacto

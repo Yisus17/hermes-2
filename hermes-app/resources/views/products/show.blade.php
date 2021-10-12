@@ -47,25 +47,28 @@
 								<td>{{$product->serial}}</td>
 							</tr>
 							<tr>
-								<th>Precio de compra</th>
+								<th>Precio</th>
 								<td>{{$product->purchase_price ? $product->purchase_price.'€' : '' }}</td>
 							</tr>
+							
+							<!--
 							<tr>
 								<th>Estado</th>
 								<td>{{$product->status}}</td>
 							</tr>
+							
 							<tr>
 								<th>Comprado por</th>
 								<td>{{$product->bought_by}}</td>
 							</tr>
-							<tr>
+							 <tr>
 								<th>Fecha de compra</th>
 								<td>{{$product->purchase_date ? $product->purchase_date->format('d/m/Y') : ''}}</td>
 							</tr>
 							<tr>
 								<th>Años de antigüedad</th>
 								<td>{{$product->years_old}}</td>
-							</tr>
+							</tr> -->
 							<tr>
 								<th>Imagen</th>
 								<td>
@@ -74,10 +77,10 @@
 									@endif
 								</td>
 							</tr>
-							<tr>
+							<!-- <tr>
 								<th>Contable</th>
 								<td>{{$product->countable ? 'Si' : 'No'}}</td>
-							</tr>
+							</tr> -->
 						</tbody>
 					</table>
 					<a href="{{route('products.edit', $product)}}" class="btn btn-primary">Editar</a>

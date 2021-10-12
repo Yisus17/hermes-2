@@ -127,7 +127,7 @@ class UserController extends Controller
         $companyId = auth::user()->company->id;
         $querySearch = $request->keyword;
         // Clean search
-        if (strlen($querySearch) == 0) { 
+        if (strlen($querySearch) == 0) {
             $users = null;
             switch (auth::user()->role_id) {
                 case (Config::get('constants.roles_id.admin')):
@@ -140,13 +140,18 @@ class UserController extends Controller
                     break;
             }
         } else {
-            $users = User::where('name', 'LIKE', '%' . $querySearch . '%')
-                ->orWhere('email', 'LIKE', '%' . $querySearch . '%')
-                ->orWhere('id', 'LIKE', '%' . $querySearch . '%')
-                ->orWhereHas('company', function ($query) use ($querySearch, $companyId) {
-                    $query->where('name', 'LIKE', '%' . $querySearch . '%')->where('id', $companyId);
-                })
-                ->paginate($this->PAGE_SIZE);
+
+
+            $users = User::where('company_id', $companyId)
+                ->where(function ($query) use ($querySearch) {
+                    $query->where('email', 'LIKE', '%' . $querySearch . '%')
+                        ->orWhere('id', 'LIKE', '%' . $querySearch . '%')
+                        ->orWhere('name', 'LIKE', '%' . $querySearch . '%')
+                        ->orWhere('last_name', 'LIKE', '%' . $querySearch . '%')
+                        ->orWhereHas('company', function ($query) use ($querySearch) {
+                            $query->where('name', 'LIKE', '%' . $querySearch . '%');
+                        });
+                })->paginate($this->PAGE_SIZE);
             $users->appends(array('keyword' => $querySearch));
         }
 
