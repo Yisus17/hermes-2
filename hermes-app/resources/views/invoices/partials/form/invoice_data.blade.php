@@ -28,10 +28,10 @@
   </div>
 
   <div class="form-group col-6">
-    <label for="description">Descripción del evento</label>
+    <label for="description">Descripción de venta</label>
     <textarea class="form-control" name="description" rows="2">{{isset($invoice) ? $invoice->description : old('description')}}</textarea>
   </div>
-
+<!-- 
   <div class="form-group col-6">
     <label for="delivery_date">Entrega</label>
     <div class="input-group">
@@ -90,7 +90,7 @@
         <span class="input-group-text"><i class="fa fa-calendar" aria-hidden="true"></i></span>
       </div>
     </div>
-  </div>
+  </div> -->
 
   <!-- Condiciones de pago con combo -->
   <!-- <div class="form-group col-4">

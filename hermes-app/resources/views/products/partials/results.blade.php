@@ -2,10 +2,10 @@
   <table class="table table-striped">
     <thead>
       <tr>
-        <th scope="col"><span class="guide-field">*</span>Modelo</th>
-        <th scope="col"><span class="guide-field">*</span>Marca</th>
-        <th scope="col"><span class="guide-field">*</span>Descripción</th>
-        <th scope="col"><span class="guide-field">*</span>Categoria</th>
+        <th scope="col"><span class="guide-field">* </span>Modelo</th>
+        <th scope="col"><span class="guide-field">* </span>Marca</th>
+        <th scope="col"><span class="guide-field">* </span>Categoria</th>
+        <th scope="col"><span class="guide-field">* </span>Stock</th>
         <th scope="col">Precio ({{auth()->user()->company->currency}})</th>
         <!-- <th scope="col">Fecha de compra</th> -->
         <th scope="col">Acciones</th>
@@ -18,8 +18,9 @@
         <td>{{ $item->model }}</td>
         <td>{{ $item->brand }}</td>
         <!--Limita caracteres de la celda-->
-        <td>{{\Illuminate\Support\Str::limit($item->description,50 , '...') }}</td>
+        <!-- <td>{{\Illuminate\Support\Str::limit($item->description,50 , '...') }}</td> -->
         <td>{{ $item->category->name }}</td>
+        <td>{{ $item->stock }}</td>
         <td>{{ $item->purchase_price ? $item->purchase_price : ''  }}</td>
         <!-- <td>{{ $item->purchase_date ? $item->purchase_date->format('d/m/Y') : ''}}</td> -->
         <td id="actions_td">

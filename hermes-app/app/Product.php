@@ -10,7 +10,7 @@ class Product extends Model{
 	protected $fillable = [
 		'code', 'brand', 'model', 'description', 
 		'type', 'serial', 'purchase_price', 'status', 
-		'bought_by', 'countable', 'purchase_date', 'years_old', 'deleted', 'company_id'];
+		'bought_by', 'countable', 'purchase_date', 'years_old', 'deleted', 'company_id', 'stock'];
 
 	protected $casts = [
 		'countable' => 'boolean'
@@ -37,4 +37,8 @@ class Product extends Model{
 	public function company(){ 
         return $this->belongsTo(Company::class);
     }
+
+	public function hasStock(){
+		return $this->stock > 0;
+	}
 }

@@ -13,13 +13,13 @@
 
     <tr class="table-soft-header">
       <th colspan="6">Dirección</th>
-      <th colspan="6">Descripción del evento</th>
+      <th colspan="6">Descripción de venta</th>
     </tr>
     <tr>
       <td colspan="6">{{$invoice->address}}</td>
       <td colspan="6">{{$invoice->description}}</td>
     </tr>
-
+<!-- 
     <tr class="table-soft-header">
       <th colspan="4">Entrega</th>
       <th colspan="4">Devolución</th>
@@ -40,7 +40,7 @@
       <td colspan="4">{{$invoice->start_date ? $invoice->start_date->format('d/m/Y H:m') : ''}}</td>
       <td colspan="4">{{$invoice->end_date ? $invoice->end_date->format('d/m/Y H:m') : ''}}</td>
       <td colspan="4">{{$invoice->uninstalation_date ? $invoice->uninstalation_date->format('d/m/Y H:m') : ''}}</td>
-    </tr>
+    </tr> -->
 
     <tr class="table-soft-header">
       <th colspan="6">Condiciones de pago</th>

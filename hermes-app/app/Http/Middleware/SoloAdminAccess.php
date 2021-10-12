@@ -20,6 +20,7 @@ class SoloAdminAccess
     {
         if (auth::user()->role_id == Config::get('constants.roles_id.admin')){
             return $next($request);
-        }   
+        } 
+        return redirect('home');
     }
 }

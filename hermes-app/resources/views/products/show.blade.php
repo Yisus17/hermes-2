@@ -43,8 +43,8 @@
 								<td>{{$product->type}}</td>
 							</tr>
 							<tr>
-								<th>Serial</th>
-								<td>{{$product->serial}}</td>
+								<th>Stock Disponible</th>
+								<td>{{$product->stock}}</td>
 							</tr>
 							<tr>
 								<th>Precio</th>

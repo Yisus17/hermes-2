@@ -34,7 +34,7 @@ class InvoiceController extends Controller{
 
 	public function storeOrUpdate(CreateEditInvoiceRequest $request, $id=null){
 		$editMode = $id != null;
-
+		
 		if($editMode){
 			$invoice = Invoice::findOrFail($id);
 			$invoice->update($request->all());
@@ -54,6 +54,7 @@ class InvoiceController extends Controller{
 		}
 
 		if(isset($request->products)){
+			// transaction 1
 			foreach ($products as $product){
 				$totalProductPrice = calculateProductTotalPrice($product);
 				$taxBase = $taxBase + $totalProductPrice;
@@ -69,6 +70,10 @@ class InvoiceController extends Controller{
 						'total_price' => $totalProductPrice
 					]
 				);
+			}
+			// transaction 2
+			if(!$editMode) {
+				$this->updateProductStockUnits($products);
 			}
 		}
 		
@@ -167,6 +172,17 @@ class InvoiceController extends Controller{
 			return view('invoices.partials.results', compact('invoices'));
 		} else {
 			return view('invoices.list', compact('invoices', 'querySearch'));
+		}
+	}
+
+
+
+	public function updateProductStockUnits($productsDto) {
+		foreach ($productsDto as $productDto){
+			
+			$product = Product::findOrFail($productDto['id']);
+			$product->stock = $product->stock - $productDto['quantity']; 
+			$product->save();
 		}
 	}
 }

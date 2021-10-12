@@ -127,6 +127,7 @@ class ClientController extends Controller
 				->where(function ($query) use ($querySearch) {
 					$query->where('business_name', 'LIKE', '%' . $querySearch . '%')
 						->orWhere('name', 'LIKE', '%' . $querySearch . '%')
+						->orWhere('email', 'LIKE', '%' . $querySearch . '%')
 						->orWhere('lastname', 'LIKE', '%' . $querySearch . '%')
 						->orWhere('phone', $querySearch);
 				})->paginate($this->PAGE_SIZE);

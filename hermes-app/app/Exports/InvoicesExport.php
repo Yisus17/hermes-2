@@ -32,7 +32,7 @@ class InvoicesExport implements FromView, WithEvents, ShouldAutoSize, WithDrawin
 	public function drawings(){
 		$logo = new Drawing();
 		$logo->setName('Logo');
-		$logo->setPath(public_path('/img/logo_onyx.png'));
+		$logo->setPath(public_path('\uploads\company_logos\\'.auth()->user()->company->logo));
 		$logo->setHeight(80);
 		$logo->setCoordinates('E1');
 

@@ -77,13 +77,13 @@
     <label for="stock">Stock</label>
     <input 
       type="number" 
-      name="serial" 
+      name="stock" 
       class="form-control" 
-      value="0"/>
+      value="{{isset($product) ? $product->stock : old('stock')}}" />
   </div>
 
   <div class="form-group col-12 col-sm-6">
-    <label for="purchase_price">Precio de compra</label>
+    <label for="purchase_price">Precio</label>
     <div class="input-group">
       <input 
         type="number" 
