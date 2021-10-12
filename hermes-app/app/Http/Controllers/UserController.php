@@ -12,7 +12,6 @@ use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
-
     private $PAGE_SIZE = 30;
 
     /**
@@ -125,17 +124,34 @@ class UserController extends Controller
 
     public function search(Request $request)
     {
+        $companyId = auth::user()->company->id;
         $querySearch = $request->keyword;
-        if (strlen($querySearch) == 0) { // clear search
-            $users =  User::paginate($this->PAGE_SIZE);
+        // Clean search
+        if (strlen($querySearch) == 0) {
+            $users = null;
+            switch (auth::user()->role_id) {
+                case (Config::get('constants.roles_id.admin')):
+                    $users = User::paginate($this->PAGE_SIZE);
+                    break;
+                case (Config::get('constants.roles_id.moderator')):
+                    $users = User::where('company_id', $companyId)
+                        ->where('role_id', '<>', Config::get('constants.roles_id.admin'))
+                        ->paginate($this->PAGE_SIZE);
+                    break;
+            }
         } else {
-            $users = User::where('name', 'LIKE', '%' . $querySearch . '%')
-                ->orWhere('email', 'LIKE', '%' . $querySearch . '%')
-                ->orWhere('id', 'LIKE', '%' . $querySearch . '%')
-                ->orWhereHas('company', function ($query) use ($querySearch) {
-                    $query->where('name', 'LIKE', '%' . $querySearch . '%');
-                })
-                ->paginate($this->PAGE_SIZE);
+
+
+            $users = User::where('company_id', $companyId)
+                ->where(function ($query) use ($querySearch) {
+                    $query->where('email', 'LIKE', '%' . $querySearch . '%')
+                        ->orWhere('id', 'LIKE', '%' . $querySearch . '%')
+                        ->orWhere('name', 'LIKE', '%' . $querySearch . '%')
+                        ->orWhere('last_name', 'LIKE', '%' . $querySearch . '%')
+                        ->orWhereHas('company', function ($query) use ($querySearch) {
+                            $query->where('name', 'LIKE', '%' . $querySearch . '%');
+                        });
+                })->paginate($this->PAGE_SIZE);
             $users->appends(array('keyword' => $querySearch));
         }
 
