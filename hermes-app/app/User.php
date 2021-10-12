@@ -47,5 +47,19 @@ class User extends Authenticatable
     { //$user-company
         return $this->belongsTo(Company::class);
     }
-    
+
+    public function isAdmin()
+    {
+        return $this->role_id == Config::get('constants.roles_id.admin');
+    }
+
+    public function isModerator()
+    {
+        return $this->role_id == Config::get('constants.roles_id.moderator');
+    }
+
+    public function isSimple()
+    {
+        return $this->role_id == Config::get('constants.roles_id.simple');
+    }
 }

@@ -41,8 +41,8 @@ class UserController extends Controller
                 break;
             case (Config::get('constants.roles_id.moderator')):
                 $users = User::where('company_id', $currentCompanyId)
-                ->where('role_id', '<>', Config::get('constants.roles_id.admin'))
-                ->paginate($this->PAGE_SIZE);
+                    ->where('role_id', '<>', Config::get('constants.roles_id.admin'))
+                    ->paginate($this->PAGE_SIZE);
 
                 break;
             case (Config::get('constants.roles_id.simple_user')):
@@ -94,6 +94,7 @@ class UserController extends Controller
         $roles = Role::all();
         $companies = Company::all();
         $isCreatingForm = false;
+
         return view('users.edit', compact('user', 'roles', 'companies', 'isCreatingForm'));
     }
 
@@ -132,8 +133,8 @@ class UserController extends Controller
                 ->orWhere('email', 'LIKE', '%' . $querySearch . '%')
                 ->orWhere('id', 'LIKE', '%' . $querySearch . '%')
                 ->orWhereHas('company', function ($query) use ($querySearch) {
-					$query->where('name', 'LIKE', '%' . $querySearch . '%');
-				})
+                    $query->where('name', 'LIKE', '%' . $querySearch . '%');
+                })
                 ->paginate($this->PAGE_SIZE);
             $users->appends(array('keyword' => $querySearch));
         }
@@ -147,14 +148,17 @@ class UserController extends Controller
 
     public function storeOrUpdate(Request $request, $id = null)
     {
-
+        //Create
         if ($id == null) {
             $user = new User($request->all());
             $user->password = Hash::make($user->password);
 
-            //setting the company from the creator of this user
-            $user->company_id = auth::user()->company->id;
+            if (!$request->has('company_id')) {
+                //setting the company from the creator of this user
+                $user->company_id = auth::user()->company->id;
+            }
         } else {
+            //Edit
             $user = User::findOrFail($id);
             $user->update($request->all());
             if ($request->has('password')) {
