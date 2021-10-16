@@ -100,7 +100,7 @@ Breadcrumbs::for('invoices.create', function ($trail) {
 // Dashboard > Facturas > Mostrar factura
 Breadcrumbs::for('invoices.show', function ($trail, $item) {
   $trail->parent('invoices');
-  $trail->push('Factura #'.numerationReportFormat($item->id) , route('invoices.show',$item->id));
+  $trail->push('Factura #'.numerationReportFormat($item->secuence_number) , route('invoices.show',$item->id));
 });
 
 // Dashboard > Facturas > Editar factura

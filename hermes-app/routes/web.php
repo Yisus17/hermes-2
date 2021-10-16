@@ -61,3 +61,11 @@ Route::resource('/users', 'UserController');
 Route::get('/companies/search/{keyword?}', 'CompanyController@search')->name('companies.search');
 Route::resource('/companies', 'CompanyController');
 
+// Purchases
+// Route::get('/purchases/search/{keyword?}', 'PurchaseController@search')->name('purchases.search');
+Route::resource('/purchases', 'PurchaseController');
+// Route::post('/purchases/addProduct', 'PurchaseController@addProduct');
+// Route::get('/purchases/excelExport/{id}', 'PurchaseController@excelExport')->name('purchases.excelExport');
+// Route::get('/purchases/excelView/{id}', 'PurchaseController@excelView')->name('purchases.excelView');
+// Route::get('/purchases/duplicate/{id}', 'PurchaseController@duplicate')->name('purchases.duplicate');
+

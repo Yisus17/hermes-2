@@ -35,9 +35,6 @@ class ClientController extends Controller
 				$clients = Client::where('company_id', $currentCompanyId)->paginate($this->PAGE_SIZE);
 				return view('clients.list', compact('clients'));
 		}
-
-		$clients =  Client::paginate($this->PAGE_SIZE);
-		return view('clients.list', compact('clients'));
 	}
 
 	public function create()

@@ -9,7 +9,8 @@ class Invoice extends Model{
 		'delivery_date', 'return_date', 'instalation_date', 
 		'start_date', 'end_date', 'uninstalation_date',
 		'validity', 'description', 'address', 
-		'payment_conditions', 'payment_method', 'tax_percentage', 'notes', 'deleted'];
+		'payment_conditions', 'payment_method', 'tax_percentage',
+		 'notes', 'deleted', 'company_id', 'secuence_number','control_number'];
 
 	protected $dates = [
 		'delivery_date', 'return_date', 
@@ -32,5 +33,9 @@ class Invoice extends Model{
 	public function getTaxAmountAttribute(){
 		$taxAmount = getPercentageValue($this->total, $this->tax_percentage);
 		return $taxAmount;
+	}
+
+	public function company(){
+		return $this->belongsTo(Company::class);
 	}
 }

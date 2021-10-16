@@ -12,7 +12,7 @@
     @foreach ($invoices as $item)
     @if(!$item->deleted)
     <tr>
-      <td>{{ numerationReportFormat($item->id) }}</td>
+      <td>{{ numerationReportFormat($item->secuence_number) }}</td>
       <td>{{ $item->client->business_name }}</td>
       <td>{{ $item->created_at ? $item->created_at->format('d/m/Y H:m') : ''}}</td>
       <td>{{ truncateText($item->description, 50) }}</td>

@@ -1,66 +1,97 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Config;
 use App\Invoice;
 use App\Client;
+use App\Company;
 use App\Product;
 use App\Http\Requests\CreateEditInvoiceRequest;
 use App\Exports\InvoicesExport;
 use Maatwebsite\Excel\Excel;
 use Carbon\Carbon;
 
-class InvoiceController extends Controller{
+
+class InvoiceController extends Controller
+{
 	private $PAGE_SIZE = 30;
-	
-	public function __construct(){
+
+	public function __construct()
+	{
 		$this->middleware('auth');
 	}
 
-	public function index(){
-		$invoices =  Invoice::paginate($this->PAGE_SIZE);
-		return view('invoices.list', compact('invoices'));
+	public function index()
+	{
+
+		$currentCompanyId = auth::user()->company->id;
+		$currentUser = auth::user();
+
+		switch ($currentUser->role_id) {
+			case (Config::get('constants.roles_id.admin')):
+				$invoices =  Invoice::paginate($this->PAGE_SIZE);
+				return view('invoices.list', compact('invoices'));
+
+			case (Config::get('constants.roles_id.moderator') || Config::get('constants.roles_id.simple_user')):
+				$invoices = Invoice::where('company_id', $currentCompanyId)->paginate($this->PAGE_SIZE);
+				return view('invoices.list', compact('invoices'));
+		}
 	}
 
-	public function create(){
-		$clients = Client::all();
+	public function create()
+	{
+		$currentUser = auth::user();
+
+		$clients = $this->getClientsByRoleAndCompany($currentUser);
+		// FIXME : cambiar por numero de secuencia
 		$invoiceQty = Invoice::all()->count();
-		$products = Product::select('id','code','description')->get();
+
+		$products = Product::select('id', 'code', 'description')
+			->where('company_id', $currentUser->company->id)->get();
 		return view(
-			'invoices.create', 
-			compact('clients', 'products','invoiceQty'));
+			'invoices.create',
+			compact('clients', 'products', 'invoiceQty')
+		);
 	}
 
-	public function storeOrUpdate(CreateEditInvoiceRequest $request, $id=null){
+	public function storeOrUpdate(CreateEditInvoiceRequest $request, $id = null)
+	{
 		$editMode = $id != null;
-		
-		if($editMode){
+
+		if ($editMode) {
 			$invoice = Invoice::findOrFail($id);
 			$invoice->update($request->all());
-		}else{
-			$invoice = new Invoice($request->all());
+		} else {
+			$invoice = $this->buildNewInvoice($request);
 		}
 
 		$client = Client::find($request->client_id);
 		$invoice->client()->associate($client);
+
+		$company = Company::find(auth::user()->company->id);
+		$invoice->company()->associate($company);
+
 		$invoice->push();
 
 		$taxBase = 0; //Base imponible
 		$products = $request->products;
 
-		if($editMode) {
+		if ($editMode) {
 			$invoice->products()->detach();
 		}
 
-		if(isset($request->products)){
+		if (isset($request->products)) {
 			// transaction 1
-			foreach ($products as $product){
+			foreach ($products as $product) {
 				$totalProductPrice = calculateProductTotalPrice($product);
 				$taxBase = $taxBase + $totalProductPrice;
 
 				$invoice->products()->attach(
-					$product['id'], 
+					$product['id'],
 					[
 						'description' => $product['description'],
 						'quantity' => $product['quantity'],
@@ -72,75 +103,84 @@ class InvoiceController extends Controller{
 				);
 			}
 			// transaction 2
-			if(!$editMode) {
+			if (!$editMode) {
 				$this->updateProductStockUnits($products);
 			}
 		}
-		
-		$message = 'Factura '. ($editMode ? 'editada' : 'creada') .' exitosamente';
+
+		$message = 'Factura ' . ($editMode ? 'editada' : 'creada') . ' exitosamente';
 		$invoice->total = $taxBase; // Add total to invoice
 		$invoice->save();
 		return redirect('invoices')->with('message', $message);
 	}
 
-	public function store(CreateEditInvoiceRequest $request){
+	public function store(CreateEditInvoiceRequest $request)
+	{
 		return $this->storeOrUpdate($request);
 	}
 
-	public function show($id){
+	public function show($id)
+	{
 		$invoice = Invoice::findOrFail($id);
 		return view('invoices.show', compact('invoice'));
 	}
 
-	public function edit($id){
+	public function edit($id)
+	{
 		$invoice =  Invoice::findOrFail($id);
 		$clients = Client::all();
-		$products = Product::select('id','code','description')->get();
+		$products = Product::select('id', 'code', 'description')->get();
 		return view('invoices.edit', compact('invoice', 'clients', 'products'));
 	}
 
-	public function update(CreateEditInvoiceRequest $request, $id){
+	public function update(CreateEditInvoiceRequest $request, $id)
+	{
 		return $this->storeOrUpdate($request, $id);
 	}
 
-	public function destroy($id){
+	public function destroy($id)
+	{
 		$invoiceToDelete = Invoice::findOrFail($id);
 		$invoiceToDelete->deleted = true;
 		$invoiceToDelete->save();
 		return redirect('invoices')->with('message', 'Factura ocultada exitosamente');
 	}
 
-	public function addProduct(Request $request){
-		try{
+	public function addProduct(Request $request)
+	{
+		try {
 			$productId = (int)$request->product_id;
 			$product =  Product::findOrFail($productId);
 			$uniqid = Str::random(9); //Unique id to manipulate events in DOM per product
-		} catch(Exception $exception){
+		} catch (Exception $exception) {
 			return $exception;
 		}
-		
+
 		return view('invoices.product', compact('product', 'uniqid'));
 	}
 
-	public function excelExport($id){
+	public function excelExport($id)
+	{
 		$invoiceToExport = Invoice::findOrFail($id);
-		$fileName = 'factura'.$invoiceToExport->id.'_'.Carbon::now()->timestamp.'.xlsx';
+		$fileName = 'factura' . $invoiceToExport->id . '_' . Carbon::now()->timestamp . '.xlsx';
 		return (new InvoicesExport($invoiceToExport))->download($fileName, Excel::XLSX);
 	}
 
-	public function excelView($id){
+	public function excelView($id)
+	{
 		$invoice = Invoice::findOrFail($id);
 		return view('invoices.excel', compact('invoice'));
 	}
 
-	public function duplicate($id){
+	public function duplicate($id)
+	{
 		$invoiceToDuplicate = Invoice::findOrFail($id);
 		$newInvoice = $invoiceToDuplicate->replicate();
 		$newInvoice->push();
 
-		foreach ($invoiceToDuplicate->products as $invoiceProduct){
+		foreach ($invoiceToDuplicate->products as $invoiceProduct) {
 			$newInvoice->products()->attach(
-				$invoiceProduct->id, 
+				$invoiceProduct->id,
 				[
 					'description' => $invoiceProduct->pivot->description,
 					'quantity' => $invoiceProduct->pivot->quantity,
@@ -154,7 +194,8 @@ class InvoiceController extends Controller{
 		return redirect()->route('invoices.show', [$newInvoice->id])->with('message', 'Factura duplicada exitosamente');
 	}
 
-	public function search(Request $request){
+	public function search(Request $request)
+	{
 		$querySearch = $request->keyword;
 		if (strlen($querySearch) == 0) { // clear search
 			$invoices =  Invoice::paginate($this->PAGE_SIZE);
@@ -175,14 +216,46 @@ class InvoiceController extends Controller{
 		}
 	}
 
+	public function updateProductStockUnits($productsDto)
+	{
+		foreach ($productsDto as $productDto) {
 
-
-	public function updateProductStockUnits($productsDto) {
-		foreach ($productsDto as $productDto){
-			
 			$product = Product::findOrFail($productDto['id']);
-			$product->stock = $product->stock - $productDto['quantity']; 
+			$product->stock = $product->stock - $productDto['quantity'];
 			$product->save();
 		}
+	}
+
+	public function getClientsByRoleAndCompany($currentUser)
+	{
+
+		$currentCompanyId = $currentUser->company->id;
+
+		switch ($currentUser->role_id) {
+			case (Config::get('constants.roles_id.admin')):
+				return  Client::paginate($this->PAGE_SIZE);
+
+			case (Config::get('constants.roles_id.moderator')
+				|| Config::get('constants.roles_id.simple_user')):
+				return Client::where('company_id', $currentCompanyId)->paginate($this->PAGE_SIZE);
+		}
+	}
+
+	public function buildNewInvoice(CreateEditInvoiceRequest $request)
+	{
+		$invoice = new Invoice($request->all());
+
+		$lastInvoice = Invoice::where('company_id', auth::user()->company->id)
+			->latest('created_at')
+			->first();
+
+		if($lastInvoice != null){
+			
+			$invoice->secuence_number = $lastInvoice->secuence_number+1;
+			return $invoice;
+		}
+
+		$invoice->secuence_number = 1;
+		return $invoice;
 	}
 }

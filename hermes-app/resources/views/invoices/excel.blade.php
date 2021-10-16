@@ -16,7 +16,7 @@
     </tr>
 
     <tr>
-      <td colspan="3" style="text-align:left; vertical-align: top"><b>Factura #{{numerationReportFormat($invoice->id)}}</b></td>
+      <td colspan="3" style="text-align:left; vertical-align: top"><b>Factura #{{numerationReportFormat($invoice->secuence_number)}}</b></td>
       <td colspan="3">&nbsp;</td>
       <td colspan="3" style="text-align:right;">Fecha de elaboración: {{ $invoice->created_at ? $invoice->created_at->format('d/m/Y') : ''}}</td>
     </tr>

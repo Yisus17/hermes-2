@@ -12,7 +12,7 @@
       @include('partials.session_message')
 			<div class="card">
 				<div class="card-header d-flex justify-content-between align-items-center">
-          <span>Detalles de la factura <b>#{{numerationReportFormat($invoice->id)}}</b></span>
+          <span>Detalles de la factura <b>#{{numerationReportFormat($invoice->secuence_number)}}</b></span>
           <a href="{{route('invoices.excelExport', $invoice->id)}}" class="btn btn-success btn-sm float-right">
             <span><i class="fas fa-file-excel mr-1"></i> Descargar excel</span>
           </a>
